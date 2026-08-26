@@ -1,3 +1,5 @@
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export async function api(path, options = {}) {
   const token = localStorage.getItem('rmsvg-token')
   const headers = { ...(options.headers || {}) }
@@ -5,7 +7,8 @@ export async function api(path, options = {}) {
     headers['Content-Type'] = 'application/json'
   }
   if (token) headers.Authorization = `Bearer ${token}`
-  const res = await fetch(path, { ...options, headers })
+  const url = `${API_BASE}${path}`
+  const res = await fetch(url, { ...options, headers })
   if (res.status === 401 && path.startsWith('/api/admin')) {
     localStorage.removeItem('rmsvg-token')
     window.location.href = '/admin/login'
