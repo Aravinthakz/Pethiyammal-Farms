@@ -55,27 +55,97 @@ public class DataSeeder implements ApplicationRunner {
             s.setMapEmbedUrl("https://maps.google.com/maps?q=Namakkal&t=&z=13&ie=UTF8&iwloc=&output=embed");
             settingsRepository.save(s);
         }
-        if (livestockRepository.count() == 0) {
-            saveGoat("GOAT-001", "Native Goat", Gender.MALE, "8 Months", 8, "28", "18000", true,
-                    "https://images.unsplash.com/photo-1524024977331-8c0b5c6d8c5a?auto=format&fit=crop&w=900&q=80");
-            saveGoat("GOAT-002", "Native Goat", Gender.FEMALE, "10 Months", 10, "26", "16500", true,
-                    "https://images.unsplash.com/photo-1551884831-bbf3cdc6469e?auto=format&fit=crop&w=900&q=80");
-            saveGoat("GOAT-003", "Boer Cross", Gender.MALE, "14 Months", 14, "38", "24500", false,
-                    "https://images.unsplash.com/photo-1545468800-85cc9bc1efb7?auto=format&fit=crop&w=900&q=80");
-            saveGoat("GOAT-004", "Tellicherry", Gender.FEMALE, "7 Months", 7, "22", "14200", false,
-                    "https://images.unsplash.com/photo-1583336663277-620dc1996580?auto=format&fit=crop&w=900&q=80");
-            saveCow("COW-001", "Native Cow", Gender.FEMALE, "3 Years", 36, "320", "65000", true,
-                    "https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=900&q=80");
-            saveCow("COW-002", "Kangayam", Gender.MALE, "2 Years", 24, "380", "72000", true,
-                    "https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=900&q=80");
-            saveCow("COW-003", "Native Cow", Gender.FEMALE, "4 Years", 48, "350", "58000", false,
-                    "https://images.unsplash.com/photo-1570042223111-2a8873b8a9c5?auto=format&fit=crop&w=900&q=80");
-            saveChicken("CHICKEN-001", "Country Chicken", "6 Months", 6, "1.8", "280", "5", "50", true,
-                    "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=900&q=80");
-            saveChicken("CHICKEN-002", "Aseel Chicken", "8 Months", 8, "2.2", "320", "5", "40", true,
-                    "https://images.unsplash.com/photo-1612170153139-6f881ff067e0?auto=format&fit=crop&w=900&q=80");
-            saveChicken("CHICKEN-003", "Kadaknath", "5 Months", 5, "1.5", "450", "3", "25", false,
-                    "https://images.unsplash.com/photo-1563281577-a7be47e20f57?auto=format&fit=crop&w=900&q=80");
+        if (livestockRepository.count() > 0) {
+            List<Livestock> available = livestockRepository.findAll().stream()
+                    .filter(item -> item.getStatus() == LivestockStatus.AVAILABLE)
+                    .toList();
+            for (int i = 0; i < available.size(); i++) {
+                available.get(i).setFeatured(i < 5);
+            }
+            livestockRepository.saveAll(available);
+            return;
+        }
+
+        String[] goatBreeds = {"Native Goat", "Boer Cross", "Tellicherry", "Jamunapari", "Osmanabadi", "Sirohi", "Malabari", "Kanni", "Local Goat", "Crossbred Goat", "Black Goat", "White Goat", "Mountain Goat", "Desi Goat", "Farm Goat"};
+        String[] cowBreeds = {"Native Cow", "Kangayam", "Gir", "Sahiwal", "Jersey Cross", "Local Cow", "Murrah Cross", "Red Sindhi", "Holstein", "Cattle", "Fresian", "Brown Cow", "Young Cow", "Milking Cow", "Healthy Cow"};
+        String[] chickenBreeds = {"Country Chicken", "Aseel Chicken", "Kadaknath", "Broiler Cross", "Local Chicken", "Village Chicken", "Farm Chicken", "Desi Chicken", "Native Chicken", "Poultry Chicken", "White Feather Chicken", "Brown Chicken", "Red Feather Chicken", "Hill Chicken", "Broiler Chicken"};
+        String[] goatImages = {
+                "https://images.unsplash.com/photo-1524024977331-8c0b5c6d8c5a?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1551884831-bbf3cdc6469e?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1545468800-85cc9bc1efb7?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1583336663277-620dc1996580?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1474511320723-9a56873867b5?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80"
+        };
+        String[] cowImages = {
+                "https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1570042223111-2a8873b8a9c5?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1609444440599-febc0fd3e6a2?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1532584965868-5d71fb1eb620?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1527153857715-3908f2ba8e56?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1570042223111-2a8873b8a9c5?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=900&q=80"
+        };
+        String[] chickenImages = {
+                "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1612170153139-6f881ff067e0?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1563281577-a7be47e20f57?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1607574555409-543b0dfe304d?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1589279003513-467d320f47eb?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1518492104633-130d0f6d1bf0?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1612170153139-6f881ff067e0?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1563281577-a7be47e20f57?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1607574555409-543b0dfe304d?auto=format&fit=crop&w=900&q=80",
+                "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&w=900&q=80"
+        };
+
+        for (int i = 0; i < 15; i++) {
+            boolean featured = i < 5;
+            int months = 6 + (i * 2);
+            int goatWeight = 20 + (i * 3);
+            int goatPrice = 12000 + (i * 1800);
+            saveGoat("GOAT-" + String.format("%03d", i + 1), goatBreeds[i], i % 2 == 0 ? Gender.MALE : Gender.FEMALE,
+                    months + " Months", months, String.valueOf(goatWeight), String.valueOf(goatPrice), featured, goatImages[i]);
+        }
+
+        for (int i = 0; i < 15; i++) {
+            boolean featured = i < 5;
+            int months = 18 + (i * 6);
+            int cowWeight = 260 + (i * 20);
+            int cowPrice = 42000 + (i * 5000);
+            saveCow("COW-" + String.format("%03d", i + 1), cowBreeds[i], i % 2 == 0 ? Gender.FEMALE : Gender.MALE,
+                    (months >= 24 ? (months / 12) + " Years" : months + " Months"), months, String.valueOf(cowWeight), String.valueOf(cowPrice), featured, cowImages[i]);
+        }
+
+        for (int i = 0; i < 15; i++) {
+            boolean featured = i < 5;
+            int ageMonths = 4 + i;
+            int qty = 12 + i * 5;
+            int price = 260 + i * 25;
+            saveChicken("CHICKEN-" + String.format("%03d", i + 1), chickenBreeds[i], ageMonths + " Months", ageMonths,
+                    String.valueOf((i + 1) * 1.6), String.valueOf(price), "5", String.valueOf(qty), featured, chickenImages[i]);
         }
     }
 

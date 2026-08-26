@@ -78,8 +78,20 @@ public class LivestockService {
 
     @Transactional(readOnly = true)
     public List<LivestockDto> featured() {
-        return livestockRepository.findByFeaturedTrueAndStatus(LivestockStatus.AVAILABLE)
-                .stream().map(LivestockDto::from).toList();
+        List<Livestock> featured = livestockRepository.findByFeaturedTrueAndStatus(LivestockStatus.AVAILABLE);
+        if (!featured.isEmpty()) {
+            return featured.stream().map(LivestockDto::from).toList();
+        }
+
+        Specification<Livestock> spec = (root, query, cb) -> {
+            List<Predicate> preds = new ArrayList<>();
+            preds.add(cb.equal(root.get("status"), LivestockStatus.AVAILABLE));
+            return cb.and(preds.toArray(Predicate[]::new));
+        };
+
+        List<Livestock> available = livestockRepository.findAll(spec);
+        available.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+        return available.stream().limit(5).map(LivestockDto::from).toList();
     }
 
     @Transactional(readOnly = true)
