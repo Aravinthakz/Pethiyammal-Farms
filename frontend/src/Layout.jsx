@@ -29,7 +29,6 @@ export function Layout() {
             <Link to="/" className="logo">
               <img className="brand-logo" src="/pethiyammal-farms-logo.png" alt="Pethiyammal Farms" />
             </Link>
-            <NavLink className="brand-admin-link" to="/admin/login" target="_blank" rel="noreferrer">Admin</NavLink>
           </div>
           <button className="menu-btn" onClick={() => setOpen(!open)} aria-label="Menu">☰</button>
           <nav className={`nav ${open ? 'open' : ''}`} onClick={() => setOpen(false)}>
@@ -40,7 +39,6 @@ export function Layout() {
             <NavLink to="/wholesale">Wholesale</NavLink>
             <NavLink to="/about">About</NavLink>
             <NavLink to="/contact">Contact</NavLink>
-            <NavLink to="/admin/login" target="_blank" rel="noreferrer">Admin</NavLink>
           </nav>
           <a className="btn btn-primary btn-sm" href={wa} target="_blank" rel="noreferrer">WhatsApp Us</a>
         </div>
@@ -64,7 +62,6 @@ export function Layout() {
             <Link to="/how-to-order">How to Order</Link>
             <Link to="/about">About Us</Link>
             <Link to="/contact">Contact</Link>
-            <Link to="/admin/login">Admin</Link>
           </div>
           <div>
             <h4>Support</h4>
