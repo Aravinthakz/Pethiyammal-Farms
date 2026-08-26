@@ -39,6 +39,7 @@ export function Layout() {
             <NavLink to="/wholesale">Wholesale</NavLink>
             <NavLink to="/about">About</NavLink>
             <NavLink to="/contact">Contact</NavLink>
+            <NavLink to="/admin/login" target="_blank" rel="noreferrer">Admin</NavLink>
           </nav>
           <a className="btn btn-primary btn-sm" href={wa} target="_blank" rel="noreferrer">WhatsApp Us</a>
         </div>
