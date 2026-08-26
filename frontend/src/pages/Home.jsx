@@ -13,7 +13,9 @@ export default function Home() {
   const settings = useOutletContext()
   const [featured, setFeatured] = useState([])
   useEffect(() => {
-    api('/api/livestock/featured').then(setFeatured).catch(() => {})
+    api('/api/livestock/featured')
+      .then((data) => setFeatured(Array.isArray(data) ? data : []))
+      .catch(() => setFeatured([]))
   }, [])
   const wa = waLink(settings.whatsappNumber, 'Hello Pethiyammal Farms, I would like to place an order.')
 

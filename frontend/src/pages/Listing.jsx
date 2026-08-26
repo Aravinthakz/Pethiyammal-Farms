@@ -26,7 +26,9 @@ export default function Listing({ category }) {
     if (gender) q.set('gender', gender)
     if (price) q.set('price', price)
     if (sort) q.set('sort', sort)
-    api(`/api/livestock?${q}`).then(setItems).catch(() => setItems([]))
+    api(`/api/livestock?${q}`)
+      .then((data) => setItems(Array.isArray(data) ? data : []))
+      .catch(() => setItems([]))
   }, [category, age, gender, price, sort, meta.seo])
 
   return (

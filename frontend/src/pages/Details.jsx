@@ -20,7 +20,9 @@ export default function Details() {
       setQty(data.minOrderQty || 1)
       setSaved(inEnquiryList(data.id))
     }).catch(() => setItem(null))
-    api(`/api/livestock/${id}/similar`).then(setSimilar).catch(() => {})
+    api(`/api/livestock/${id}/similar`)
+      .then((data) => setSimilar(Array.isArray(data) ? data : []))
+      .catch(() => setSimilar([]))
   }, [id])
 
   const total = useMemo(() => {
